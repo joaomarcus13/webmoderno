@@ -1,0 +1,31 @@
+const schedule = require('node-schedule')
+
+
+module.exports = app => {
+    schedule.scheduleJob('*/1 * * * *', async function () {
+        const usersCount = await app.db('users').count('id').first()
+        const categoriesCount = await app.db('categories').count('id').first()
+        const articlesCount = await app.db('articles').count('id').first()
+
+        const { Stat } = app.api.stats
+
+        const lastStat = await Stat.findOne({}, {},
+            { sort: { 'createAt': -1 } })
+
+        const stat = new Stat({
+            users: usersCount.count,
+            categories: categoriesCount.count,
+            articles: articlesCount.count,
+            createAt: new Date()
+        })
+
+        const changeUsers = !lastStat || stat.users !== lastStat.users
+        const changecategories = !lastStat || stat.categories !== lastStat.categories
+        const changearticles = !lastStat || stat.articles !== lastStat.articles
+
+        if(changeUsers||changecategories||changearticles){
+            stat.save().then(()=>console.log('[Stats] estatisticas atualizadas'))
+        }
+    })
+
+}

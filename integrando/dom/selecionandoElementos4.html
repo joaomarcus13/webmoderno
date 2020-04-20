@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Selecionar Elementos #04</title>
+    <link rel="stylesheet" href="css/estilo.css">
+</head>
+
+<body class="conteudo exercicio">
+    <div>
+        <p>Início</p>
+    </div>
+    <div>
+        <ul>
+            <li>Pedro</li>
+            <li>Ana</li>
+            <li>Bia</li>
+        </ul>
+    </div>
+    <div>
+        <p>Fim</p>
+    </div>
+
+
+    <script>
+        
+        function log(){
+            console.log(this)
+        }
+
+        HTMLCollection.prototype.log=log
+        HTMLElement.prototype.log=log
+        NodeList.prototype.log=log
+        Node.prototype.log=log
+
+
+        const lista = document.querySelector('div ul')
+        //parentNode acessa o pai
+        lista.parentNode.log()
+        lista.childNodes.log()
+
+
+        //primeiro filho
+        const primeiro = lista.firstChild
+        primeiro.log()
+        //irmao
+        primeiro.nextSibling.log()
+
+        const ultimo = lista.lastChild
+        ultimo.log()
+        ultimo.previousSibling.log()
+
+
+        //retona os elementos filhos
+       lista.children.log()
+       lista.firstElementChild.log()
+       lista.lastElementChild.log()
+
+       lista.parentNode.previousElementSibling.children.log()
+    </script>
+</body>
+
+</html>

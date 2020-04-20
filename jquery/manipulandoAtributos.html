@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='UTF-8'>
+    <title>Manipulando Atributos</title>
+    <link rel='stylesheet' href='css/estilo.css'>
+    <script src='js/jquery.js'></script>
+    <style>
+        [wm-relogio] {
+            text-align: center;
+        }
+
+        [wm-relogio] button {
+            font-size: 1.6em;
+            padding: 0px 25px;
+            margin: 10px;
+        }
+    </style>
+</head>
+
+<body class='conteudo exercicio'>
+    <h1>Manipulando Atributos</h1>
+    <div wm-relogio='1000'></div>
+
+
+    <script>
+
+        function Relogio(elem) {
+            const hora = $('<p>')
+            const botaoMenos = $('<button>').html('-')
+            const botaoMais = $('<button>').html('+')
+
+            const $elem = $(elem)
+            $elem.append(hora, botaoMenos, botaoMais)
+
+            const getInterval =
+                () => parseInt($elem.attr('wm-relogio'))
+
+            let temporizador = null
+
+            const iniciar = () => {
+                if (temporizador) clearInterval(temporizador)
+                temporizador = setInterval(() => {
+                    hora.html(new Date().toLocaleString('pt-BR'))
+                }, getInterval())
+            }
+
+            const alterarIntervalo = delta => {
+                const novo = Math.max(getInterval()+delta,1000)
+                $elem.attr('wm-relogio',novo)
+                iniciar()
+            }
+
+            botaoMenos.click(e=>alterarIntervalo(1000))
+            botaoMais.click(e=>alterarIntervalo(-1000))
+            iniciar()
+        }
+
+
+        $("[wm-relogio]").each((i, e) => new Relogio(e))
+
+
+    </script>
+</body>
